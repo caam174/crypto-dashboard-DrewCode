@@ -3,128 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Monitor & Miner Panel</title>
-    <!-- Tailwind CSS para diseño estructural limpio y ágil -->
+    <title>Micro Monitor 2.8"</title>
+    <!-- Tailwind CSS para renderizado rápido -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
+        /* Optimización estricta para pantallas TFT de 2.8 pulgadas (Resolución objetivo: 320x240 px) */
         body {
-            background-color: #0b0f19;
-            color: #e2e8f0;
-            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: #000000; /* Negro absoluto para maximizar el contraste y reducir fatiga del panel */
+            color: #ffffff;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            width: 320px;
+            height: 240px;
+            overflow: hidden; /* Evita scrollbars en pantallas embebidas */
         }
-        .crypto-card {
-            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-            border: 1px solid #374151;
-        }
-        @keyframes pulse-subtle {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .live-pulse {
-            animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .text-giant {
+            font-size: 3.5rem; /* Tamaño masivo para la hora */
+            line-height: 1;
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-between min-h-screen p-4 md:p-8">
+<body class="flex flex-col justify-between p-2 mx-auto select-none">
 
-    <!-- CABECERA / CONTROL DE TIEMPO -->
-    <header class="w-full max-w-5xl text-center my-6">
-        <h1 class="text-sm font-semibold tracking-widest text-gray-500 uppercase mb-2">Sistema de Monitoreo Centralizado</h1>
-        <div id="clock" class="text-5xl md:text-7xl font-bold tracking-wider text-cyan-400 font-mono drop-shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+    <!-- SECCIÓN 1: RELOJ ULTRA MASIVO (REGLA DE PRIORIDAD VISUAL) -->
+    <div class="text-center w-full mt-1">
+        <div id="clock" class="text-giant font-bold tracking-tighter text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.4)]">
             00:00:00
         </div>
-        <p id="date" class="text-sm text-gray-400 font-mono mt-2 uppercase tracking-wide">Cargando fecha...</p>
-    </header>
+    </div>
 
-    <!-- MATRIZ DE ACTIVOS (PRECIOS EN TIEMPO REAL) -->
-    <main class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
-        
-        <!-- Bloque Bitcoin -->
-        <div class="crypto-card p-6 rounded-2xl shadow-xl transition-all duration-300 hover:border-amber-500/50">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl text-amber-500">⚡</span>
-                    <h2 class="text-xl font-bold tracking-tight text-white">Bitcoin (BTC)</h2>
-                </div>
-                <span class="px-2.5 py-0.5 text-xs font-mono font-medium rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 live-pulse">
-                    En Vivo
-                </span>
-            </div>
-            <div id="btc-price" class="text-3xl md:text-5xl font-mono font-bold text-slate-100 tracking-tight">
-                $0.00
-            </div>
-            <p class="text-xs text-gray-500 mt-2 font-mono">Par de negociación: BTC/USDT (Binance Feed)</p>
+    <!-- SECCIÓN 2: MATRIZ COMPACTA DE PRECIOS (BTC / ETH) -->
+    <div class="grid grid-cols-2 gap-2 w-full my-1">
+        <!-- BTC Box -->
+        <div class="bg-zinc-900/80 border border-amber-500/30 rounded p-1.5 text-center">
+            <div class="text-[10px] font-bold text-amber-500 uppercase tracking-tight">BTC/USDT</div>
+            <div id="btc-price" class="text-sm font-bold text-slate-100 mt-0.5">$0.00</div>
         </div>
-
-        <!-- Bloque Ethereum -->
-        <div class="crypto-card p-6 rounded-2xl shadow-xl transition-all duration-300 hover:border-indigo-500/50">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center gap-3">
-                    <span class="text-3xl text-indigo-400">⧫</span>
-                    <h2 class="text-xl font-bold tracking-tight text-white">Ethereum (ETH)</h2>
-                </div>
-                <span class="px-2.5 py-0.5 text-xs font-mono font-medium rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 live-pulse">
-                    En Vivo
-                </span>
-            </div>
-            <div id="eth-price" class="text-3xl md:text-5xl font-mono font-bold text-slate-100 tracking-tight">
-                $0.00
-            </div>
-            <p class="text-xs text-gray-500 mt-2 font-mono">Par de negociación: ETH/USDT (Binance Feed)</p>
+        <!-- ETH Box -->
+        <div class="bg-zinc-900/80 border border-indigo-500/30 rounded p-1.5 text-center">
+            <div class="text-[10px] font-bold text-indigo-400 uppercase tracking-tight">ETH/USDT</div>
+            <div id="eth-price" class="text-sm font-bold text-slate-100 mt-0.5">$0.00</div>
         </div>
-    </main>
+    </div>
 
-    <!-- TELEMETRÍA DE MINADO (SÓLO MINING CONCEPCIÓN) -->
-    <section class="w-full max-w-5xl crypto-card p-6 rounded-2xl shadow-xl my-6 border-emerald-500/20">
-        <div class="flex items-center justify-between mb-6 border-b border-gray-800 pb-4">
-            <div class="flex items-center gap-3">
-                <span class="text-2xl text-emerald-400">⛏️</span>
-                <h3 class="text-lg font-bold text-white tracking-tight">Módulo de Telemetría: NerdMiner NMminer V2</h3>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] live-pulse"></span>
-                <span class="text-xs font-mono text-emerald-400 uppercase tracking-wider font-semibold">Nodo Escucha Activo</span>
-            </div>
+    <!-- SECCIÓN 3: TELEMETRÍA MÍNIMA DEL MINERO -->
+    <div class="w-full bg-zinc-900/40 border border-emerald-500/20 rounded p-1.5 flex items-center justify-between mb-1">
+        <div class="flex items-center gap-1.5">
+            <span class="inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+            <span class="text-[10px] text-gray-400 font-bold uppercase">NerdMiner V2</span>
         </div>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono">
-            <div class="bg-black/30 border border-gray-800 p-4 rounded-xl text-center">
-                <h4 class="text-xs text-gray-400 uppercase tracking-wider">Capacidad de Cómputo</h4>
-                <p id="miner-hashrate" class="text-2xl font-bold text-emerald-400 mt-1">1,010 Kh/s</p>
-                <p class="text-[10px] text-gray-500 mt-1">Tasa de Hash Nominal Estabilizada</p>
-            </div>
-            <div class="bg-black/30 border border-gray-800 p-4 rounded-xl text-center">
-                <h4 class="text-xs text-gray-400 uppercase tracking-wider">Dispositivos en Red</h4>
-                <p id="miner-workers" class="text-2xl font-bold text-white mt-1">1 / 1</p>
-                <p class="text-[10px] text-gray-500 mt-1">Trabajadores Asignados en Pool</p>
-            </div>
-            <div class="bg-black/30 border border-gray-800 p-4 rounded-xl text-center">
-                <h4 class="text-xs text-gray-400 uppercase tracking-wider">Bloques Encontrados</h4>
-                <p id="miner-blocks" class="text-2xl font-bold text-white mt-1">0</p>
-                <p class="text-[10px] text-gray-500 mt-1">Frecuencia de Acierto en Solo</p>
-            </div>
+        <div class="text-right">
+            <span id="miner-hashrate" class="text-xs font-bold text-emerald-400">1,010 Kh/s</span>
         </div>
-    </section>
+    </div>
 
-    <!-- PIE DE PÁGINA REGLAMENTARIO -->
-    <footer class="w-full max-w-5xl text-center text-xs text-gray-600 font-mono mt-4 border-t border-gray-900 pt-4">
-        Arquitectura Descentralizada sin Servidor (Client-Side) | Actualización vía WebSockets API de Alta Velocidad.
-    </footer>
-
-    <!-- LOGICA DE EJECUCIÓN (JASVASCRIPT) -->
+    <!-- SCRIPT DE FLUJO DE DATOS -->
     <script>
-        // Sincronización del Reloj de Alta Precisión
+        // Actualización síncrona del reloj (Formato 24h estricto)
         function updateClock() {
             const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('es-PE', { hour12: false });
-            
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('date').innerText = now.toLocaleDateString('es-PE', options);
+            document.getElementById('clock').innerText = now.toLocaleTimeString('es-PE', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Pipeline de Datos en Tiempo Real vía WebSockets (Binance API)
+        // Feed de Datos de Alta Velocidad (WebSockets)
         const wsUrl = "wss://stream.binance.com:9443/ws/btcusdt@ticker/ethusdt@ticker";
         const ws = new WebSocket(wsUrl);
 
@@ -132,23 +79,17 @@
             const data = JSON.parse(event.data);
             
             if (data.s === "BTCUSDT") {
-                const btcPrice = parseFloat(data.c).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                const btcPrice = parseFloat(data.c).toLocaleString('en-US', { maximumFractionDigits: 0 });
                 document.getElementById('btc-price').innerText = `$${btcPrice}`;
             }
             if (data.s === "ETHUSDT") {
-                const ethPrice = parseFloat(data.c).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                const ethPrice = parseFloat(data.c).toLocaleString('en-US', { maximumFractionDigits: 0 });
                 document.getElementById('eth-price').innerText = `$${ethPrice}`;
             }
         };
 
-        ws.onclose = () => {
-            console.log("Conexión WebSocket cerrada. Intentando reconexión secuencial...");
-            setTimeout(() => { location.reload(); }, 5000);
-        };
-
-        ws.onerror = (error) => {
-            console.error("Error detectado en el flujo de datos: ", error);
-        };
+        ws.onclose = () => { setTimeout(() => { location.reload(); }, 5000); };
     </script>
 </body>
 </html>
+```[cite: 2]
